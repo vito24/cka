@@ -3,5 +3,5 @@
 ## Installation
 
 ```
-npm install karo
+npm install cka
 ```
