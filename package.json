@@ -1,13 +1,13 @@
 {
-  "name": "kora",
+  "name": "cka",
   "version": "0.0.1",
   "description": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vito24/karo.git"
+    "url": "https://github.com/vito24/cka.git"
   },
   "bugs": {
-    "url": "https://github.com/vito24/karo/issues"
+    "url": "https://github.com/vito24/cka/issues"
   },
   "main": "index.js",
   "scripts": {
