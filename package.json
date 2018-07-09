@@ -20,5 +20,11 @@
   "license": "MIT",
   "engines": {
     "node": ">=0.10.0"
+  },
+  "bin": {
+    "cka": "./bin/cka"
+  },
+  "dependencies": {
+    "commander": "^2.16.0"
   }
 }
