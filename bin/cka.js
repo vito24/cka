@@ -1,12 +1,23 @@
 #!/usr/bin/env node
-'use strict';
+"use strict";
 
-const path = require('path');
-const fs = require('fs');
-const program = require('commander');
+const path = require("path");
+const fs = require("fs");
+const program = require("commander");
 
-console.log('process.argv', process.argv);
-if (process.argv.slice(2).join('') === '-v') {
-  const pkg = require('../package');
-  console.log('cka-cli version: ' + pkg.version);
-}
+// console.log("process.argv", process.argv);
+// process.exit()
+// program.help();
+
+program.version(require("../package").version);
+
+program
+  .command("new [name]")
+  .alias("n")
+  .description("create a new project")
+  .action((name = 'myApp') => {
+
+    console.log("=====", name);
+  });
+
+program.parse(process.argv);
