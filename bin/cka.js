@@ -2,11 +2,11 @@
 "use strict";
 
 const path = require("path");
-const fs = require("fs");
+const fs = require("fs-extra");
 const program = require("commander");
+const chalk = require("chalk");
 
 // console.log("process.argv", process.argv);
-// process.exit()
 // program.help();
 
 program.version(require("../package").version);
@@ -15,9 +15,17 @@ program
   .command("new [name]")
   .alias("n")
   .description("create a new project")
-  .action((name = 'myApp') => {
-
-    console.log("=====", name);
+  .action((name = "cka-demo") => {
+    // create a new project
+    const projectDir = path.join(process.cwd(), name);
+    if (fs.existsSync(projectDir)) {
+      console.error(chalk.red("The folder already exists"));
+      process.exit();
+    }
+    fs.mkdirpSync(projectDir);
+    process.chdir(projectDir);
+    const templateDir = path.join(__dirname, 'template');
+    console.log("=====", templateDir);
   });
 
 program.parse(process.argv);
