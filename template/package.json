@@ -1,0 +1,9 @@
+{
+  "name": "cka-demo",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "which": "^1.3.1"
+  }
+}
