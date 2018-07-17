@@ -1,4 +1,4 @@
-# My first npm package
+# CLI
 
 ## Installation
 
