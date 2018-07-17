@@ -9,7 +9,6 @@
   "bugs": {
     "url": "https://github.com/vito24/cka/issues"
   },
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -28,7 +27,7 @@
     "node": ">=0.10.0"
   },
   "bin": {
-    "cka": "./bin/cka"
+    "cka": "./bin/cka.js"
   },
   "dependencies": {
     "chalk": "^2.4.1",
