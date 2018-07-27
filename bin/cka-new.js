@@ -11,7 +11,7 @@ const message = require('./message');
 
 program
   .option(
-    '-n, --not-install',
+    '-n, --no-install',
     "Don't execute 'npm install' after cerating project."
   )
   .parse(process.argv);
@@ -47,7 +47,7 @@ vfs
   .on('end', function() {
     spinner.stop();
     message.success('\n download success! \n');
-    if (!program.notInstall) {
+    if (program.install) {
       message.info('run', ' npm install');
       npmInstall(function() {
         // success install callback
