@@ -27,3 +27,4 @@ lerna-debug.log*
 .idea/
 selenium-debug.log
 demo/
+template/package-lock.json

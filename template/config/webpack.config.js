@@ -1,4 +1,5 @@
 const path = require('path');
+const Webpack = require('webpack');
 
 module.exports = {
   entry: path.join(__dirname, '../src/index.js'),
@@ -16,5 +17,15 @@ module.exports = {
         loader: "babel-loader"
       }
     ]
-  }
+  },
+  devServer: {
+    contentBase: path.join(__dirname, '../dist'),
+    compress: true,
+    hot: true,
+    port: 9000,
+    open: true // open browser automatically
+  },
+  plugins: [
+    new Webpack.HotModuleReplacementPlugin()
+  ]
 };
