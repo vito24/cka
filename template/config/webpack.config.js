@@ -15,6 +15,24 @@ module.exports = {
         exclude: [/[/\\\\]node_modules[/\\\\]/],
         enforce: "pre",
         loader: "babel-loader"
+      },
+      {
+        test: /\.css$/,
+        use: [
+          require.resolve('style-loader'),
+          {
+            loader: require.resolve('css-loader'),
+            options: {
+              modules: true
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          'file-loader'
+        ]
       }
     ]
   },

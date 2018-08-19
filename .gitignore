@@ -28,3 +28,5 @@ lerna-debug.log*
 selenium-debug.log
 demo/
 template/package-lock.json
+template/yarn.lock
+template/dist/bundle.js

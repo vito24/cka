@@ -19,7 +19,9 @@
     ]
   },
   "keywords": [
-    "npm"
+    "cka",
+    "react",
+    "webpack"
   ],
   "author": "vito24",
   "license": "MIT",
