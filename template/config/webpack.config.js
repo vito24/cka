@@ -1,11 +1,12 @@
 const path = require('path');
-const Webpack = require('webpack');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: path.join(__dirname, '../src/index.js'),
   output: {
     path: path.resolve(__dirname, '../dist'),
-    filename: 'bundle.js'
+    filename: '[name].bundle.js'
   },
   module: {
     rules: [
@@ -13,8 +14,8 @@ module.exports = {
         test: /\.(js|jsx)$/,
         include: [path.resolve(__dirname, '../src')],
         exclude: [/[/\\\\]node_modules[/\\\\]/],
-        enforce: "pre",
-        loader: "babel-loader"
+        enforce: 'pre',
+        loader: 'babel-loader'
       },
       {
         test: /\.css$/,
@@ -30,9 +31,11 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        use: [
-          'file-loader'
-        ]
+        use: ['file-loader']
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: ['file-loader']
       }
     ]
   },
@@ -44,6 +47,11 @@ module.exports = {
     open: true // open browser automatically
   },
   plugins: [
-    new Webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    // Generates an `index.html` file with the <script> injected.
+    new HtmlWebpackPlugin({
+      inject: true,
+      template: path.resolve(__dirname, '../public/index.html')
+    })
   ]
 };

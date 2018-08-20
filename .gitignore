@@ -26,7 +26,7 @@ lerna-debug.log*
 .vscode/
 .idea/
 selenium-debug.log
-demo/
+
+template/dist/
 template/package-lock.json
 template/yarn.lock
-template/dist/bundle.js

@@ -9,7 +9,7 @@ class App extends Component {
         <img className={styles.logo} src={Logo} />
         <div>Hello, world!</div>
       </div>
-    )
+    );
   }
 }
 

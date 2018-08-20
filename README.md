@@ -11,7 +11,6 @@
 [download-image]: https://img.shields.io/npm/dm/cka.svg?style=flat-square
 [download-url]: https://npmjs.org/package/cka
 
-
 ## Installation
 
 [![cka](https://nodei.co/npm/cka.png)](https://npmjs.org/package/cka)
