@@ -1,12 +1,16 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
+  devtool: 'source-map',
   entry: path.join(__dirname, '../src/index.js'),
   output: {
     path: path.resolve(__dirname, '../dist'),
-    filename: '[name].bundle.js'
+    filename: 'static/js/[name].[chunkhash:8].js',
+    chunkFilename: 'static/js/[name].[chunkhash:8].chunk.js',
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -39,16 +43,14 @@ module.exports = {
       }
     ]
   },
-  devServer: {
-    contentBase: path.join(__dirname, '../dist'),
-    compress: true,
-    hot: true,
-    port: 9000,
-    open: true // open browser automatically
-  },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    // Generates an `index.html` file with the <script> injected.
+    new CleanWebpackPlugin(['dist'], {
+      // Absolute path to your webpack root folder (paths appended to this)
+      // Default: root of your package
+      root: path.resolve(__dirname, '..'),
+      // Write logs to console.
+      verbose: true
+    }),
     new HtmlWebpackPlugin({
       inject: true,
       template: path.resolve(__dirname, '../public/index.html')
