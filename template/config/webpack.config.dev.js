@@ -11,6 +11,37 @@ module.exports = merge(baseConfig, {
     chunkFilename: 'static/js/[name].chunk.js',
     publicPath: '/'
   },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        include: [path.resolve(__dirname, '../src')],
+        exclude: [/[/\\\\]node_modules[/\\\\]/],
+        enforce: 'pre',
+        loader: 'babel-loader'
+      },
+      {
+        test: /\.css$/,
+        use: [
+          require.resolve('style-loader'),
+          {
+            loader: require.resolve('css-loader'),
+            options: {
+              modules: true
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: ['file-loader']
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: ['file-loader']
+      }
+    ]
+  },
   devServer: {
     contentBase: path.join(__dirname, '../dist'),
     compress: true,
