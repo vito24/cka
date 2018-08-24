@@ -1,13 +1,20 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const baseConfig = require('./webpack.config.base');
 
+// This is the production configuration.
+// It compiles slowly and is focused on producing a fast and minimal bundle.
+// The development configuration is different and lives in a separate file.
 module.exports = merge(baseConfig, {
+  // enable many optimizations for production builds
   mode: 'production',
+  // Don't attempt to continue if there are any errors.
+  bail: true,
   devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, '../dist'),
@@ -19,9 +26,9 @@ module.exports = merge(baseConfig, {
     rules: [
       {
         test: /\.(js|jsx)$/,
+        enforce: 'pre',
         include: [path.resolve(__dirname, '../src')],
         exclude: [/[/\\\\]node_modules[/\\\\]/],
-        enforce: 'pre',
         loader: 'babel-loader'
       },
       {
@@ -29,8 +36,12 @@ module.exports = merge(baseConfig, {
         use: [MiniCssExtractPlugin.loader, 'css-loader']
       },
       {
-        test: /\.(png|svg|jpg|gif)$/,
-        use: ['file-loader']
+        test: /\.(png|svg|jpe?g|gif)$/,
+        loader: 'file-loader',
+        options: {
+          limit: 10000,
+          name: 'static/media/[name].[hash:8].[ext]'
+        }
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -46,6 +57,13 @@ module.exports = merge(baseConfig, {
       // Write logs to console.
       verbose: true
     }),
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, '../public'),
+        to: path.resolve(__dirname, '../dist'),
+        ignore: ['.html']
+      }
+    ]),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
