@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const autoprefixer = require('autoprefixer');
 const baseConfig = require('./webpack.config.base');
 
 // This is the development configuration.
@@ -27,12 +28,26 @@ module.exports = merge(baseConfig, {
       {
         test: /\.css$/,
         use: [
-          require.resolve('style-loader'),
           {
-            loader: require.resolve('css-loader'),
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
             options: {
+              // enable css modules
               modules: true
             }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [
+                require('postcss-flexbugs-fixes'),
+                autoprefixer({
+                  flexbox: 'no-2009',
+                })
+              ],
+            },
           }
         ]
       },
