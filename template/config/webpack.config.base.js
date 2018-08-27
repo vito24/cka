@@ -1,13 +1,15 @@
-const path = require('path');
+'use strict';
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const paths = require('./paths');
 
 module.exports = {
-  entry: path.join(__dirname, '../src/index.js'),
+  entry: paths.appIndex,
   plugins: [
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,
-      template: path.resolve(__dirname, '../public/index.html')
+      template: paths.appHtml
     })
   ]
 };

@@ -7,6 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const baseConfig = require('./webpack.config.base');
+const paths = require('./paths');
 
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
@@ -18,7 +19,7 @@ module.exports = merge(baseConfig, {
   bail: true,
   devtool: 'source-map',
   output: {
-    path: path.resolve(__dirname, '../dist'),
+    path: paths.appDist,
     filename: 'static/js/[name].[chunkhash:8].js',
     chunkFilename: 'static/js/[name].[chunkhash:8].chunk.js',
     publicPath: '/'
@@ -28,7 +29,7 @@ module.exports = merge(baseConfig, {
       {
         test: /\.(js|jsx)$/,
         enforce: 'pre',
-        include: [path.resolve(__dirname, '../src')],
+        include: [paths.appSrc],
         exclude: [/[/\\\\]node_modules[/\\\\]/],
         loader: 'babel-loader'
       },
@@ -68,14 +69,14 @@ module.exports = merge(baseConfig, {
     new CleanWebpackPlugin(['dist'], {
       // Absolute path to your webpack root folder (paths appended to this)
       // Default: root of your package
-      root: path.resolve(__dirname, '..'),
+      root: paths.appRoot,
       // Write logs to console.
       verbose: true
     }),
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, '../public'),
-        to: path.resolve(__dirname, '../dist'),
+        from: paths.appPublic,
+        to: paths.appDist,
         ignore: ['.html']
       }
     ]),

@@ -1,8 +1,12 @@
+'use strict';
+
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const autoprefixer = require('autoprefixer');
+const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const baseConfig = require('./webpack.config.base');
+const paths = require('./paths');
 
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.
@@ -13,7 +17,7 @@ module.exports = merge(baseConfig, {
   devtool: 'cheap-module-source-map',
   output: {
     filename: 'static/js/bundle.js',
-    chunkFilename: 'static/js/[name].chunk.js',
+    // chunkFilename: 'static/js/[name].chunk.js',
     publicPath: '/'
   },
   module: {
@@ -21,7 +25,7 @@ module.exports = merge(baseConfig, {
       {
         test: /\.(js|jsx)$/,
         enforce: 'pre',
-        include: [path.resolve(__dirname, '../src')],
+        include: [paths.appSrc],
         exclude: [/[/\\\\]node_modules[/\\\\]/],
         loader: 'babel-loader'
       },
@@ -29,7 +33,7 @@ module.exports = merge(baseConfig, {
         test: /\.css$/,
         use: [
           {
-            loader: 'style-loader',
+            loader: 'style-loader'
           },
           {
             loader: 'css-loader',
@@ -44,10 +48,10 @@ module.exports = merge(baseConfig, {
               plugins: () => [
                 require('postcss-flexbugs-fixes'),
                 autoprefixer({
-                  flexbox: 'no-2009',
+                  flexbox: 'no-2009'
                 })
-              ],
-            },
+              ]
+            }
           }
         ]
       },
@@ -67,7 +71,7 @@ module.exports = merge(baseConfig, {
   },
   devServer: {
     // static file location
-    contentBase: path.join(__dirname, '../dist'),
+    contentBase: paths.appDist,
     // enable gzip compression
     compress: true,
     // hot module replacement. Depends on HotModuleReplacementPlugin
@@ -76,5 +80,12 @@ module.exports = merge(baseConfig, {
     // open browser automatically
     open: true
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()]
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    // If you require a missing module and then `npm install` it, you still have
+    // to restart the development server for Webpack to discover it. This plugin
+    // makes the discovery automatic so you don't have to restart.
+    // See https://github.com/facebook/create-react-app/issues/186
+    new WatchMissingNodeModulesPlugin(paths.appNodeModules)
+  ]
 });
