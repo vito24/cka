@@ -1,4 +1,5 @@
-const path = require('path');
+'use strict';
+
 const merge = require('webpack-merge');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -34,10 +35,26 @@ module.exports = merge(baseConfig, {
         loader: 'babel-loader'
       },
       {
-        test: /\.css$/,
+        // "postcss" loader applies autoprefixer to our CSS.
+        // "css" loader resolves paths in CSS and adds assets as dependencies.
+        // `MiniCSSExtractPlugin` extracts styles into CSS
+        // files. If you use code splitting, async bundles will have their own separate CSS chunk file.
+        test: /\.(?:le|c)ss$/,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2,
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'less-loader',
+            options: {
+              sourceMap: true
+            }
+          },
           {
             loader: 'postcss-loader',
             options: {
@@ -97,10 +114,16 @@ module.exports = merge(baseConfig, {
         // Default number of concurrent runs: os.cpus().length - 1
         parallel: true
       }),
+      // Search for CSS assets during the Webpack build and will optimize \ minimize the CSS
       new OptimizeCSSAssetsPlugin()
     ],
+    // Automatically split vendor and commons
     splitChunks: {
-      chunks: 'all'
-    }
+      chunks: 'all',
+      name: 'vendors'
+    },
+    // Keep the runtime chunk seperated to enable long term caching
+    // https://twitter.com/wSokra/status/969679223278505985
+    runtimeChunk: true
   }
 });

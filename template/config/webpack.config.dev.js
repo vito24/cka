@@ -1,6 +1,5 @@
 'use strict';
 
-const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const autoprefixer = require('autoprefixer');
@@ -17,7 +16,7 @@ module.exports = merge(baseConfig, {
   devtool: 'cheap-module-source-map',
   output: {
     filename: 'static/js/bundle.js',
-    // chunkFilename: 'static/js/[name].chunk.js',
+    chunkFilename: 'static/js/[name].chunk.js',
     publicPath: '/'
   },
   module: {
@@ -30,7 +29,13 @@ module.exports = merge(baseConfig, {
         loader: 'babel-loader'
       },
       {
-        test: /\.css$/,
+        // "postcss" loader applies autoprefixer to our CSS.
+        // "css" loader resolves paths in CSS and adds assets as dependencies.
+        // "style" loader turns CSS into JS modules that inject <style> tags.
+        // In production, we use a plugin to extract that CSS to a file, but
+        // in development "style" loader enables hot editing of CSS.
+        // By default we support CSS Modules with the extension .css
+        test: /\.(?:le|c)ss$/,
         use: [
           {
             loader: 'style-loader'
@@ -38,9 +43,14 @@ module.exports = merge(baseConfig, {
           {
             loader: 'css-loader',
             options: {
+              importLoaders: 2,
               // enable css modules
-              modules: true
+              modules: true,
+              localIdentName: '[name]__[local]___[hash:base64:5]'
             }
+          },
+          {
+            loader: 'less-loader'
           },
           {
             loader: 'postcss-loader',
