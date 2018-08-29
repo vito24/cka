@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Logo from './assets/logo.svg';
-import styles from './App.less';
+import Logo from '../../assets/logo.svg';
+import styles from './index.less';
 
-class App extends Component {
+class Index extends Component {
   render() {
     return (
       <div className={styles.app}>
@@ -13,4 +13,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Index;

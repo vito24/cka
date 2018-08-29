@@ -96,7 +96,7 @@ module.exports = merge(baseConfig, {
     compress: true,
     // hot module replacement. Depends on HotModuleReplacementPlugin
     hot: true,
-    port: 9000,
+    port: 9001,
     // open browser automatically
     open: true
   },
