@@ -28,57 +28,64 @@ module.exports = merge(baseConfig, {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
-        enforce: 'pre',
-        include: [paths.appSrc],
-        exclude: [/[/\\\\]node_modules[/\\\\]/],
-        loader: 'babel-loader'
-      },
-      {
-        // "postcss" loader applies autoprefixer to our CSS.
-        // "css" loader resolves paths in CSS and adds assets as dependencies.
-        // `MiniCSSExtractPlugin` extracts styles into CSS
-        // files. If you use code splitting, async bundles will have their own separate CSS chunk file.
-        test: /\.(?:le|c)ss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
+        oneOf: [
           {
-            loader: 'css-loader',
+            test: /\.(js|jsx)$/,
+            enforce: 'pre',
+            include: paths.appSrc,
+            exclude: [/[/\\\\]node_modules[/\\\\]/],
+            loader: 'babel-loader'
+          },
+          {
+            // "postcss" loader applies autoprefixer to our CSS.
+            // "css" loader resolves paths in CSS and adds assets as dependencies.
+            // `MiniCSSExtractPlugin` extracts styles into CSS
+            // files. If you use code splitting, async bundles will have their own separate CSS chunk file.
+            test: /\.(?:le|c)ss$/,
+            use: [
+              MiniCssExtractPlugin.loader,
+              {
+                loader: 'css-loader',
+                options: {
+                  importLoaders: 2,
+                  sourceMap: true
+                }
+              },
+              {
+                loader: 'less-loader',
+                options: {
+                  sourceMap: true
+                }
+              },
+              {
+                loader: 'postcss-loader',
+                options: {
+                  plugins: () => [
+                    require('postcss-flexbugs-fixes'),
+                    autoprefixer({
+                      flexbox: 'no-2009'
+                    })
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            test: /\.(png|bmp$|jpe?g|gif)$/,
+            loader: 'url-loader',
             options: {
-              importLoaders: 2,
-              sourceMap: true
+              limit: 10000,
+              name: 'static/media/[name].[hash:8].[ext]'
             }
           },
           {
-            loader: 'less-loader',
+            exclude: [/\.(js|jsx|html|json)/],
+            loader: 'file-loader',
             options: {
-              sourceMap: true
-            }
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: () => [
-                require('postcss-flexbugs-fixes'),
-                autoprefixer({
-                  flexbox: 'no-2009'
-                })
-              ]
+              name: 'static/media/[name].[hash:8].[ext]'
             }
           }
         ]
-      },
-      {
-        test: /\.(png|svg|jpe?g|gif)$/,
-        loader: 'file-loader',
-        options: {
-          limit: 10000,
-          name: 'static/media/[name].[hash:8].[ext]'
-        }
-      },
-      {
-        test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: ['file-loader']
       }
     ]
   },

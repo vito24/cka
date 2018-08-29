@@ -22,60 +22,70 @@ module.exports = merge(baseConfig, {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
-        enforce: 'pre',
-        include: [paths.appSrc],
-        exclude: [/[/\\\\]node_modules[/\\\\]/],
-        loader: 'babel-loader'
-      },
-      {
-        // "postcss" loader applies autoprefixer to our CSS.
-        // "css" loader resolves paths in CSS and adds assets as dependencies.
-        // "style" loader turns CSS into JS modules that inject <style> tags.
-        // In production, we use a plugin to extract that CSS to a file, but
-        // in development "style" loader enables hot editing of CSS.
-        // By default we support CSS Modules with the extension .css
-        test: /\.(?:le|c)ss$/,
-        use: [
+        // "oneOf" will traverse all following loaders until one will
+        // match the requirements. When no loader matches it will fall
+        // back to the "file" loader at the end of the loader list.
+        oneOf: [
           {
-            loader: 'style-loader'
+            test: /\.(js|jsx)$/,
+            enforce: 'pre',
+            include: paths.appSrc,
+            exclude: [/[/\\\\]node_modules[/\\\\]/],
+            loader: 'babel-loader'
           },
           {
-            loader: 'css-loader',
+            // "postcss" loader applies autoprefixer to our CSS.
+            // "css" loader resolves paths in CSS and adds assets as dependencies.
+            // "style" loader turns CSS into JS modules that inject <style> tags.
+            // In production, we use a plugin to extract that CSS to a file, but
+            // in development "style" loader enables hot editing of CSS.
+            // By default we support CSS Modules with the extension .css
+            test: /\.(?:le|c)ss$/,
+            use: [
+              {
+                loader: 'style-loader'
+              },
+              {
+                loader: 'css-loader',
+                options: {
+                  importLoaders: 2,
+                  // enable css modules
+                  modules: true,
+                  localIdentName: '[name]__[local]___[hash:base64:5]'
+                }
+              },
+              {
+                loader: 'less-loader'
+              },
+              {
+                loader: 'postcss-loader',
+                options: {
+                  plugins: () => [
+                    require('postcss-flexbugs-fixes'),
+                    autoprefixer({
+                      flexbox: 'no-2009'
+                    })
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            test: /\.(png|bmp$|jpe?g|gif)$/,
+            loader: 'url-loader',
             options: {
-              importLoaders: 2,
-              // enable css modules
-              modules: true,
-              localIdentName: '[name]__[local]___[hash:base64:5]'
+              limit: 10000,
+              name: 'static/media/[name].[hash:8].[ext]'
             }
           },
           {
-            loader: 'less-loader'
-          },
-          {
-            loader: 'postcss-loader',
+            exclude: [/\.(js|jsx|html|json)/],
+            loader: 'file-loader',
             options: {
-              plugins: () => [
-                require('postcss-flexbugs-fixes'),
-                autoprefixer({
-                  flexbox: 'no-2009'
-                })
-              ]
+              name: 'static/media/[name].[hash:8].[ext]'
             }
           }
         ]
-      },
-      {
-        test: /\.(png|svg|jpe?g|gif)$/,
-        loader: 'file-loader',
-        options: {
-          limit: 10000,
-          name: 'static/media/[name].[hash:8].[ext]'
-        }
-      },
-      {
-        test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: ['file-loader']
       }
     ]
   },
