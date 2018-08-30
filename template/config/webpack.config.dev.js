@@ -98,7 +98,9 @@ module.exports = merge(baseConfig, {
     hot: true,
     port: 9001,
     // open browser automatically
-    open: true
+    open: true,
+    // support html5 history api
+    historyApiFallback: true
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),

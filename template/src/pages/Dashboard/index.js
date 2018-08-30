@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Logo from '../../assets/logo.svg';
 import styles from './index.less';
 
-class Index extends Component {
+class Dashboard extends Component {
   render() {
     return (
       <div className={styles.app}>
@@ -13,4 +13,4 @@ class Index extends Component {
   }
 }
 
-export default Index;
+export default Dashboard;

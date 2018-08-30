@@ -1,12 +1,17 @@
 import React from 'react';
-import { HashRouter, Route } from 'react-router-dom';
-import App from './pages/App';
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch
+} from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
 
 export default () => (
-  <HashRouter>
-    <div>
-      <Route exact path="/" component={App} />
-      <Route path="/home" component={App} />
-    </div>
-  </HashRouter>
+  <Router>
+    <Switch>
+      <Redirect exact from="/" to="dashboard" />
+      <Route exact path="/dashboard" component={Dashboard} />
+    </Switch>
+  </Router>
 );
