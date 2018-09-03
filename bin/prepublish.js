@@ -22,19 +22,13 @@ inquirer
         console.log('answer', answer);
         return `${pkg.version}-${answer.versionType}.1`;
       }
-    },
-    {
-      type: 'confirm',
-      name: 'gitPush',
-      message: 'Do you want to push your code?',
-      default: true
     }
   ])
-  .then(receipt => {
-    console.log('\nOrder receipt:', receipt);
-    const { version } = receipt;
+  .then(({ version }) => {
     pkg.version = version;
     shell.ShellString(JSON.stringify(pkg, null, 2)).to('package.json');
     shell.exec(`git commit -am 'Publish version ${version}'`);
     shell.exec(`git tag ${version}`);
+    shell.exec(`git push`);
+    shell.exec(`git push --tags`);
   });
