@@ -5,6 +5,14 @@ const inquirer = require('inquirer');
 const message = require('./message');
 const pkg = require('../package');
 
+let stdin = process.stdin;
+stdin.setEncoding('utf8');
+stdin.on('data', key => {
+  if (key === '\u0003') {
+    process.exit(1);
+  }
+});
+
 ['git', 'npm'].forEach(cmd => {
   if (!shell.which(cmd)) {
     message.error(`Please install ${cmd}.`);
@@ -25,23 +33,40 @@ inquirer
       type: 'input',
       name: 'version',
       message: 'Please input version',
-      default: function({ versionType }) {
-        const lastVersion = pkg.version.split('-')[0];
-        return versionType === 'release'
-          ? lastVersion
-          : `${lastVersion}-${versionType}.0`;
+      default({ versionType }) {
+        const [lastVersion, lastVersionTypeAndNum] = pkg.version.split('-');
+        const getNextVersion = () => {
+          const splitLastVersion = lastVersion.split('.');
+          splitLastVersion.splice(2, 1, parseInt(splitLastVersion[2]) + 1);
+          return splitLastVersion.join('.');
+        };
+        if (versionType === 'release') {
+          return getNextVersion();
+        } else {
+          let nextVersionNum = 0;
+          let nextVersion = lastVersion;
+          if (lastVersionTypeAndNum) {
+            const [lastVersionType, lastVersionNum] = lastVersionTypeAndNum.split('.');
+            if (lastVersionType === versionType) {
+              nextVersionNum = parseInt(lastVersionNum) + 1;
+            } else if (versionType === 'alpha') {
+              nextVersion = getNextVersion();
+            }
+          } else {
+            nextVersion = getNextVersion();
+          }
+          return `${nextVersion}-${versionType}.${nextVersionNum}`;
+        }
       },
-      validate: function(value) {
+      validate(value) {
         try {
           const versions = shell.exec(`npm info ${pkg.name} versions`);
-          return versions.includes(value)
-            ? 'This version already exists.'
-            : true;
+          return versions.includes(value) ? 'This version already exists.' : true;
         } catch (e) {
           message.error(
             '\nAn error occurred while getting npm package info, please check your network and retry.'
           );
-          process.exit();
+          process.exit(1);
         }
       }
     }
