@@ -60,8 +60,10 @@ inquirer
       },
       validate(value) {
         try {
-          const versions = shell.exec(`npm info ${pkg.name} versions`);
-          return versions.includes(value) ? 'This version already exists.' : true;
+          const versions = shell.exec(`npm info ${pkg.name} versions`, {
+            silent: true
+          });
+          return versions.includes(value) ? `Version ${value} already exists.` : true;
         } catch (e) {
           message.error(
             '\nAn error occurred while getting npm package info, please check your network and retry.'
