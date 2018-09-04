@@ -1,6 +1,6 @@
 {
   "name": "cka",
-  "version": "0.2.4",
+  "version": "0.2.6",
   "description": "",
   "repository": {
     "type": "git",
@@ -12,7 +12,7 @@
   "scripts": {
     "precommit": "lint-staged",
     "prepublishOnly": "node ./bin/prepublish",
-    "publish": "npm publish",
+    "publishRelease": "npm publish",
     "publishBeta": "npm publish --tag=beta"
   },
   "lint-staged": {
