@@ -2,15 +2,22 @@
 
 const shell = require('shelljs');
 const inquirer = require('inquirer');
-
+const message = require('./message');
 const pkg = require('../package');
+
+['git', 'npm'].forEach(cmd => {
+  if (!shell.which(cmd)) {
+    message.error(`Please install ${cmd}.`);
+    process.exit(1);
+  }
+});
 
 inquirer
   .prompt([
     {
       type: 'list',
       name: 'versionType',
-      message: 'Please select version type',
+      message: 'Please select version type.',
       choices: ['alpha', 'beta', 'release'],
       default: 'release'
     },
@@ -18,9 +25,24 @@ inquirer
       type: 'input',
       name: 'version',
       message: 'Please input version',
-      default: function(answer) {
-        console.log('answer', answer);
-        return `${pkg.version}-${answer.versionType}.1`;
+      default: function({ versionType }) {
+        const lastVersion = pkg.version.split('-')[0];
+        return versionType === 'release'
+          ? lastVersion
+          : `${lastVersion}-${versionType}.0`;
+      },
+      validate: function(value) {
+        try {
+          const versions = shell.exec(`npm info ${pkg.name} versions`);
+          return versions.includes(value)
+            ? 'This version already exists.'
+            : true;
+        } catch (e) {
+          message.error(
+            '\nAn error occurred while getting npm package info, please check your network and retry.'
+          );
+          process.exit();
+        }
       }
     }
   ])
