@@ -2,6 +2,7 @@
 
 const shell = require('shelljs');
 const inquirer = require('inquirer');
+const semver = require('semver');
 const message = require('./message');
 const pkg = require('../package');
 
@@ -24,60 +25,53 @@ inquirer
   .prompt([
     {
       type: 'list',
-      name: 'versionType',
-      message: 'Please select version type.',
-      choices: ['alpha', 'beta', 'release'],
-      default: 'release'
-    },
-    {
-      type: 'input',
-      name: 'version',
-      message: 'Please input version',
-      default({ versionType }) {
-        const [lastVersion, lastVersionTypeAndNum] = pkg.version.split('-');
-        const getNextVersion = () => {
-          const splitLastVersion = lastVersion.split('.');
-          splitLastVersion.splice(2, 1, parseInt(splitLastVersion[2]) + 1);
-          return splitLastVersion.join('.');
-        };
-        if (versionType === 'release') {
-          return getNextVersion();
-        } else {
-          let nextVersionNum = 0;
-          let nextVersion = lastVersion;
-          if (lastVersionTypeAndNum) {
-            const [lastVersionType, lastVersionNum] = lastVersionTypeAndNum.split('.');
-            if (lastVersionType === versionType) {
-              nextVersionNum = parseInt(lastVersionNum) + 1;
-            } else if (versionType === 'alpha') {
-              nextVersion = getNextVersion();
-            }
-          } else {
-            nextVersion = getNextVersion();
-          }
-          return `${nextVersion}-${versionType}.${nextVersionNum}`;
-        }
-      },
-      validate(value) {
-        try {
-          const versions = shell.exec(`npm info ${pkg.name} versions`, {
-            silent: true
-          });
-          return versions.includes(value) ? `Version ${value} already exists.` : true;
-        } catch (e) {
-          message.error(
-            '\nAn error occurred while getting npm package info, please check your network and retry.'
-          );
-          process.exit(1);
-        }
-      }
+      name: 'releaseType',
+      message: 'Please select release type.',
+      choices: ['major', 'premajor', 'minor', 'preminor', 'patch', 'prepatch', 'prerelease'],
+      default: 'patch'
     }
   ])
-  .then(({ version }) => {
-    pkg.version = version;
-    shell.ShellString(JSON.stringify(pkg, null, 2)).to('package.json');
-    shell.exec(`git commit -am 'Publish version ${version}'`);
-    shell.exec(`git tag ${version}`);
-    shell.exec(`git push`);
-    shell.exec(`git push --tags`);
+  .then(({ releaseType }) => {
+    const questions = [
+      {
+        type: 'list',
+        name: 'versionType',
+        message: 'Please select version type.',
+        choices: ['alpha', 'beta'],
+        default: 'alpha'
+      },
+      {
+        type: 'input',
+        name: 'version',
+        message: 'Please input version',
+        default: ({ versionType }) => semver.inc(pkg.version, releaseType, versionType),
+        validate(value) {
+          if (!semver.valid(value) || !semver.gt(value, pkg.version)) {
+            return `Invalid version(${value}).`;
+          }
+          try {
+            const versions = shell.exec(`npm info ${pkg.name} versions`, {
+              silent: true
+            });
+            return versions.includes(value) ? `Version ${value} already exists.` : true;
+          } catch (e) {
+            message.error(
+              '\nAn error occurred while getting npm package info, please check your network and retry.'
+            );
+            process.exit(1);
+          }
+        }
+      }
+    ];
+    if (!releaseType.startsWith('pre')) {
+      questions.shift();
+    }
+    inquirer.prompt(questions).then(({ version }) => {
+      pkg.version = version;
+      shell.ShellString(JSON.stringify(pkg, null, 2)).to('package.json');
+      shell.exec(`git commit -am 'Publish version ${version}'`);
+      shell.exec(`git tag ${version}`);
+      shell.exec(`git push`);
+      shell.exec(`git push --tags`);
+    });
   });
