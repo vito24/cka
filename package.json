@@ -11,7 +11,6 @@
   },
   "scripts": {
     "precommit": "lint-staged",
-    "commit": "npx git-cz",
     "prepublishOnly": "node ./bin/prepublish",
     "publishRelease": "npm publish",
     "publishBeta": "npm publish --tag=beta"
