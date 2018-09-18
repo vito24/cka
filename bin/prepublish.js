@@ -50,9 +50,11 @@ inquirer
             return `Invalid version(${value}).`;
           }
           try {
-            const versions = shell.exec(`npm info ${pkg.name} versions`, {
-              silent: true
-            });
+            const versions = JSON.parse(
+              shell.exec(`npm info ${pkg.name} version --json`, {
+                silent: true
+              }).stdout
+            );
             return versions.includes(value) ? `Version ${value} already exists.` : true;
           } catch (e) {
             message.error(

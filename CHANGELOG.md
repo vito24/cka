@@ -1,3 +1,11 @@
+<a name="0.2.10-alpha.2"></a>
+
+## [0.2.10-alpha.2](https://github.com/vito24/cka/compare/0.2.10-alpha.1...0.2.10-alpha.2) (2018-09-07)
+
+### Features
+
+- 🎸 add conventional-changelog-cli ([59b3044](https://github.com/vito24/cka/commit/59b3044))
+
 <a name="0.2.10-alpha.1"></a>
 
 ## [0.2.10-alpha.1](https://github.com/vito24/cka/compare/0.2.10-alpha.0...0.2.10-alpha.1) (2018-09-07)
