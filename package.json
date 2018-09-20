@@ -1,6 +1,6 @@
 {
   "name": "cka",
-  "version": "0.2.11-alpha.0",
+  "version": "0.2.10",
   "description": "",
   "repository": {
     "type": "git",
@@ -15,8 +15,7 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "prepublishOnly": "node ./bin/prepublish",
     "publishRelease": "npm publish",
-    "publishBeta": "npm publish --tag=beta",
-    "version": "node ./bin/version"
+    "publishBeta": "npm publish --tag=beta"
   },
   "lint-staged": {
     "*.{js,jsx,json,css,md}": [
