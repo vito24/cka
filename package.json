@@ -11,7 +11,7 @@
   },
   "scripts": {
     "precommit": "lint-staged",
-    "cm": "git-cz",
+    "cm": "git add . && git-cz",
     "version": "node ./bin/version"
   },
   "lint-staged": {
