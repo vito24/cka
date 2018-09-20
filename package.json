@@ -12,7 +12,7 @@
   "scripts": {
     "precommit": "lint-staged",
     "cm": "git add . && git-cz",
-    "release": "node ./bin/prepublish"
+    "release": "node ./bin/release"
   },
   "lint-staged": {
     "*.{js,jsx,json,css,md}": [

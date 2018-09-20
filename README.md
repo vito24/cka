@@ -1,17 +1,14 @@
-# cka-cli
+# cka
 
-[![NPM version][npm-image]][npm-url]
-[![node version][node-image]][node-url]
-[![npm download][download-image]][download-url]
+cka is a react-cli embedded with react-router and mobx(TODO).
 
-[npm-image]: http://img.shields.io/npm/v/cka.svg?style=flat-square
-[npm-url]: http://npmjs.org/package/cka
-[node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
-[node-url]: http://nodejs.org/download/
-[download-image]: https://img.shields.io/npm/dm/cka.svg?style=flat-square
-[download-url]: https://npmjs.org/package/cka
+[![NPM version](http://img.shields.io/npm/v/cka.svg)](http://npmjs.org/package/cka)
+[![node version](https://img.shields.io/badge/node.js-%3E=_0.10-green.svg)](https://img.shields.io/badge/node.js-%3E=_0.10-green.svg)
+[![npm download](https://img.shields.io/npm/dm/cka.svg)](https://npmjs.org/package/cka)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/facebook/react/blob/master/LICENSE)
 
-## Installation
+### Installation
 
 [![cka](https://nodei.co/npm/cka.png)](https://npmjs.org/package/cka)
 
@@ -21,10 +18,26 @@ or
 yarn global add cka
 ```
 
-## Creating an App
+### Creating an App
 
 ```
 npx cka new myApp // npm 5.2+ required
 cka new myApp
 cka new myApp --no-install
+```
+
+### Run the App
+
+```
+npm start
+or
+yarn start
+```
+
+### Build the App
+
+```
+npm run build
+or
+yarn build
 ```
