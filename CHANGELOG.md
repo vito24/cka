@@ -1,3 +1,12 @@
+<a name="0.3.0"></a>
+
+# [0.3.0](https://github.com/vito24/cka/compare/v0.2.11-alpha.2...v0.3.0) (2018-09-20)
+
+### Features
+
+- **package:** add script 'release' && 'cm' ([524332e](https://github.com/vito24/cka/commit/524332e))
+- **package:** add scripts 'release' && 'cm' ([05d6233](https://github.com/vito24/cka/commit/05d6233))
+
 <a name="0.2.11-alpha.2"></a>
 
 ## [0.2.11-alpha.2](https://github.com/vito24/cka/compare/v0.2.11-alpha.1...v0.2.11-alpha.2) (2018-09-20)
