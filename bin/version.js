@@ -59,9 +59,9 @@ inquirer
     inquirer.prompt(questions).then(({ versionType, version }) => {
       pkg.version = version;
       shell.ShellString(JSON.stringify(pkg, null, 2)).to('package.json');
-      shell.exec(`conventional-changelog -p angular -i CHANGELOG.md -s -r`);
-      shell.exec(`git commit -am '${version}'`);
-      shell.exec(`git tag ${version}`);
+      shell.exec(`conventional-changelog -p angular -i CHANGELOG.md -s -r 0`);
+      shell.exec(`git commit -am 'v${version}'`);
+      shell.exec(`git tag v${version}`);
       shell.exec(`git push`);
       shell.exec(`git push --tags`);
       console.log('npm publishing...');
