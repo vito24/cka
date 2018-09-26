@@ -1,6 +1,8 @@
 # cka
 
-cka is a react-cli embedded with react-router and mobx(TODO).
+cka is a react-cli embedded with react-router and mobx.
+
+React 脚手架，内嵌了 react-router(v4)和 mobx(v5).
 
 [![NPM version](http://img.shields.io/npm/v/cka.svg)](http://npmjs.org/package/cka)
 [![node version](https://img.shields.io/badge/node.js-%3E=_0.10-green.svg)](https://img.shields.io/badge/node.js-%3E=_0.10-green.svg)

@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
-import Logo from '../../assets/logo.svg';
-import styles from './index.less';
+import { observer, Provider } from 'mobx-react';
+import Dashboard from './Dashboard';
+import Store from './Store';
 
-class Dashboard extends Component {
+@observer
+export default class extends Component {
+  constructor(props) {
+    super(props);
+    this.store = new Store();
+  }
+
   render() {
     return (
-      <div className={styles.app}>
-        <img className={styles.logo} src={Logo} />
-        <div>Hello, world!</div>
-      </div>
+      <Provider store={this.store}>
+        <Dashboard />
+      </Provider>
     );
   }
 }
-
-export default Dashboard;
