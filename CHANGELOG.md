@@ -1,3 +1,11 @@
+<a name="0.4.0"></a>
+
+# [0.4.0](https://github.com/vito24/cka/compare/v0.3.1...v0.4.0) (2018-09-26)
+
+### Features
+
+- **package:** add mobx ([cedae37](https://github.com/vito24/cka/commit/cedae37))
+
 <a name="0.3.1"></a>
 
 ## [0.3.1](https://github.com/vito24/cka/compare/v0.3.0...v0.3.1) (2018-09-25)
