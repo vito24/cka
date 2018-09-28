@@ -10,5 +10,10 @@ module.exports = {
     'react/jsx-filename-extension': [1, { extensions: ['.js'] }],
     'global-require': [1],
     'react/prop-types': [0]
+  },
+  parserOptions: {
+    ecmaFeatures: {
+      legacyDecorators: true
+    }
   }
 };

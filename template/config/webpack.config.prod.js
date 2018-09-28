@@ -33,7 +33,7 @@ module.exports = merge(baseConfig, {
             test: /\.(js|jsx)$/,
             enforce: 'pre',
             include: paths.appSrc,
-            exclude: [/[/\\\\]node_modules[/\\\\]/],
+            exclude: /node_modules/,
             loader: 'babel-loader'
           },
           {
