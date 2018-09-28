@@ -1,3 +1,11 @@
+<a name="0.5.0"></a>
+
+# [0.5.0](https://github.com/vito24/cka/compare/v0.4.0...v0.5.0) (2018-09-28)
+
+### Features
+
+- **package:** add eslint ([8de39bd](https://github.com/vito24/cka/commit/8de39bd))
+
 <a name="0.4.0"></a>
 
 # [0.4.0](https://github.com/vito24/cka/compare/v0.3.1...v0.4.0) (2018-09-26)
