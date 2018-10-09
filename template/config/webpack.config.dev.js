@@ -7,6 +7,53 @@ const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeM
 const baseConfig = require('./webpack.config.base');
 const paths = require('./paths');
 
+// "postcss" loader applies autoprefixer to our CSS.
+// "css" loader resolves paths in CSS and adds assets as dependencies.
+// "style" loader turns CSS into JS modules that inject <style> tags.
+// In production, we use a plugin to extract that CSS to a file, but
+// in development "style" loader enables hot editing of CSS.
+// By default we support CSS Modules with the extension .less|css
+const getStyleLoaderConfig = ({ modules = false } = {}) => {
+  const cssLoaderConfig = {
+    importLoaders: 1
+  };
+  if (modules) {
+    const cssModulesConfig = {
+      // enable css modules
+      modules: true,
+      localIdentName: '[name]__[local]___[hash:base64:5]'
+    };
+    Object.assign(cssLoaderConfig, cssModulesConfig);
+  }
+  return [
+    {
+      loader: 'style-loader'
+    },
+    {
+      loader: 'css-loader',
+      options: cssLoaderConfig
+    },
+    {
+      loader: 'postcss-loader',
+      options: {
+        plugins: () => [
+          require('postcss-flexbugs-fixes'),
+          autoprefixer({
+            flexbox: 'no-2009'
+          })
+        ]
+      }
+    },
+    {
+      loader: 'less-loader',
+      options: {
+        importLoaders: 2,
+        javascriptEnabled: true
+      }
+    }
+  ];
+};
+
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.
 // The production configuration is different and lives in a separate file.
@@ -34,41 +81,15 @@ module.exports = merge(baseConfig, {
             loader: 'babel-loader'
           },
           {
-            // "postcss" loader applies autoprefixer to our CSS.
-            // "css" loader resolves paths in CSS and adds assets as dependencies.
-            // "style" loader turns CSS into JS modules that inject <style> tags.
-            // In production, we use a plugin to extract that CSS to a file, but
-            // in development "style" loader enables hot editing of CSS.
-            // By default we support CSS Modules with the extension .css
-            test: /\.(?:le|c)ss$/,
-            use: [
-              {
-                loader: 'style-loader'
-              },
-              {
-                loader: 'css-loader',
-                options: {
-                  importLoaders: 2,
-                  // enable css modules
-                  modules: true,
-                  localIdentName: '[name]__[local]___[hash:base64:5]'
-                }
-              },
-              {
-                loader: 'less-loader'
-              },
-              {
-                loader: 'postcss-loader',
-                options: {
-                  plugins: () => [
-                    require('postcss-flexbugs-fixes'),
-                    autoprefixer({
-                      flexbox: 'no-2009'
-                    })
-                  ]
-                }
-              }
-            ]
+            // enable CSS Modules if files are not in node_modules
+            test: /\.(less|css)$/,
+            exclude: /node_modules/,
+            use: getStyleLoaderConfig({ modules: true })
+          },
+          {
+            test: /\.(less|css)$/,
+            include: /node_modules/,
+            use: getStyleLoaderConfig()
           },
           {
             test: /\.(png|bmp$|jpe?g|gif)$/,

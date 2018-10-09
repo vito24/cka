@@ -10,6 +10,52 @@ const autoprefixer = require('autoprefixer');
 const baseConfig = require('./webpack.config.base');
 const paths = require('./paths');
 
+// `MiniCSSExtractPlugin` extracts styles into CSS
+// "css" loader resolves paths in CSS and adds assets as dependencies.
+// By default we support CSS Modules with the extension .less|css
+// "postcss" loader applies autoprefixer to our CSS.
+// If you use code splitting, async bundles will have their own separate CSS chunk file.
+const getStyleLoaderConfig = ({ modules = false } = {}) => {
+  const cssLoaderConfig = {
+    importLoaders: 1
+  };
+  if (modules) {
+    const cssModulesConfig = {
+      // enable css modules
+      modules: true,
+      sourceMap: true,
+      localIdentName: '[name]__[local]___[hash:base64:5]'
+    };
+    Object.assign(cssLoaderConfig, cssModulesConfig);
+  }
+  return [
+    MiniCssExtractPlugin.loader,
+    {
+      loader: 'css-loader',
+      options: cssLoaderConfig
+    },
+    {
+      loader: 'postcss-loader',
+      options: {
+        plugins: () => [
+          require('postcss-flexbugs-fixes'),
+          autoprefixer({
+            flexbox: 'no-2009'
+          })
+        ]
+      }
+    },
+    {
+      loader: 'less-loader',
+      options: {
+        importLoaders: 2,
+        javascriptEnabled: true,
+        sourceMap: true
+      }
+    }
+  ];
+};
+
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
 // The development configuration is different and lives in a separate file.
@@ -37,41 +83,15 @@ module.exports = merge(baseConfig, {
             loader: 'babel-loader'
           },
           {
-            // "postcss" loader applies autoprefixer to our CSS.
-            // "css" loader resolves paths in CSS and adds assets as dependencies.
-            // `MiniCSSExtractPlugin` extracts styles into CSS
-            // files. If you use code splitting, async bundles will have their own separate CSS chunk file.
-            test: /\.(?:le|c)ss$/,
-            use: [
-              MiniCssExtractPlugin.loader,
-              {
-                loader: 'css-loader',
-                options: {
-                  importLoaders: 2,
-                  // enable css modules
-                  modules: true,
-                  sourceMap: true,
-                  localIdentName: '[name]__[local]___[hash:base64:5]'
-                }
-              },
-              {
-                loader: 'less-loader',
-                options: {
-                  sourceMap: true
-                }
-              },
-              {
-                loader: 'postcss-loader',
-                options: {
-                  plugins: () => [
-                    require('postcss-flexbugs-fixes'),
-                    autoprefixer({
-                      flexbox: 'no-2009'
-                    })
-                  ]
-                }
-              }
-            ]
+            // enable CSS Modules if files are not in node_modules
+            test: /\.(less|css)$/,
+            exclude: /node_modules/,
+            use: getStyleLoaderConfig({ modules: true })
+          },
+          {
+            test: /\.(less|css)$/,
+            include: /node_modules/,
+            use: getStyleLoaderConfig()
           },
           {
             test: /\.(png|bmp$|jpe?g|gif)$/,
