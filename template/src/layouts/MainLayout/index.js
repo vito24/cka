@@ -8,7 +8,7 @@ import Sider from './Sider';
 import Header from './Header';
 
 import 'rc-drawer/assets/index.css';
-import styles from './index.less';
+import styles from './index.module.less';
 
 const { Content, Footer } = Layout;
 

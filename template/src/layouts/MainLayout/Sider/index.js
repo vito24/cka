@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import menus from '../../../menu';
 
 import logo from '../../../assets/logo.png';
-import styles from './index.less';
+import styles from './index.module.less';
 
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;

@@ -12,11 +12,12 @@ const paths = require('./paths');
 // "style" loader turns CSS into JS modules that inject <style> tags.
 // In production, we use a plugin to extract that CSS to a file, but
 // in development "style" loader enables hot editing of CSS.
-// By default we support CSS Modules with the extension .less|css
-const getStyleLoaderConfig = ({ modules = false } = {}) => {
+// By default we support CSS Modules with the extension .module.less|.module.css
+const getStyleLoaderConfig = ({ modules = false, loader } = {}) => {
   const cssLoaderConfig = {
     importLoaders: 1
   };
+
   if (modules) {
     const cssModulesConfig = {
       // enable css modules
@@ -25,7 +26,8 @@ const getStyleLoaderConfig = ({ modules = false } = {}) => {
     };
     Object.assign(cssLoaderConfig, cssModulesConfig);
   }
-  return [
+
+  const styleLoaders = [
     {
       loader: 'style-loader'
     },
@@ -43,15 +45,20 @@ const getStyleLoaderConfig = ({ modules = false } = {}) => {
           })
         ]
       }
-    },
-    {
-      loader: 'less-loader',
+    }
+  ];
+
+  if (loader) {
+    styleLoaders.push({
+      loader,
       options: {
         importLoaders: 2,
         javascriptEnabled: true
       }
-    }
-  ];
+    });
+  }
+
+  return styleLoaders;
 };
 
 // This is the development configuration.
@@ -81,15 +88,30 @@ module.exports = merge(baseConfig, {
             loader: 'babel-loader'
           },
           {
-            // enable CSS Modules if files are not in node_modules
-            test: /\.(less|css)$/,
-            exclude: /node_modules/,
-            use: getStyleLoaderConfig({ modules: true })
+            test: /\.css$/,
+            exclude: /\.module\.css$/,
+            use: getStyleLoaderConfig()
           },
           {
-            test: /\.(less|css)$/,
-            include: /node_modules/,
-            use: getStyleLoaderConfig()
+            test: /\.less$/,
+            exclude: /\.module\.less/,
+            use: getStyleLoaderConfig({
+              loader: 'less-loader'
+            })
+          },
+          {
+            // enable CSS Modules with the extensions .module.css or .module.less
+            test: /\.module\.css$/,
+            use: getStyleLoaderConfig({
+              modules: true
+            })
+          },
+          {
+            test: /\.module\.less/,
+            use: getStyleLoaderConfig({
+              modules: true,
+              loader: 'less-loader'
+            })
           },
           {
             test: /\.(png|bmp$|jpe?g|gif)$/,
