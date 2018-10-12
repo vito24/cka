@@ -13,6 +13,5 @@ module.exports = {
   appSrc: resolveApp('src'),
   appDist: resolveApp('dist'),
   appPublic: resolveApp('public'),
-  appRoot: resolveApp('.'),
-  appPackageJson: resolveApp('package.json')
+  appRoot: resolveApp('.')
 };
