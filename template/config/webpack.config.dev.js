@@ -6,6 +6,7 @@ const autoprefixer = require('autoprefixer');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const baseConfig = require('./webpack.config.base');
 const paths = require('./paths');
+const packageJson = require(paths.appPackageJson);
 
 // "postcss" loader applies autoprefixer to our CSS.
 // "css" loader resolves paths in CSS and adds assets as dependencies.
@@ -140,10 +141,13 @@ module.exports = merge(baseConfig, {
     // hot module replacement. Depends on HotModuleReplacementPlugin
     hot: true,
     port: 9001,
-    // open browser automatically
+    // open the browser automatically
     open: true,
     // support html5 history api
-    historyApiFallback: true
+    historyApiFallback: true,
+    // show errors in the browser
+    overlay: true,
+    proxy: packageJson.proxy
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
