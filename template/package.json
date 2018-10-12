@@ -4,7 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --config config/webpack.config.dev.js --progress",
+    "back-start": "webpack-dev-server --config config/webpack.config.dev.js",
+    "start": "node ./scripts/start.js",
     "build": "webpack --config config/webpack.config.prod.js"
   },
   "dependencies": {
@@ -60,5 +61,13 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.1"
+  },
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:3004",
+      "pathRewrite": {
+        "^/api": ""
+      }
+    }
   }
 }

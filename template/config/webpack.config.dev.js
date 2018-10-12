@@ -6,6 +6,7 @@ const autoprefixer = require('autoprefixer');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const baseConfig = require('./webpack.config.base');
 const paths = require('./paths');
+const packageJson = require(paths.appPackageJson);
 
 // "postcss" loader applies autoprefixer to our CSS.
 // "css" loader resolves paths in CSS and adds assets as dependencies.
@@ -132,19 +133,22 @@ module.exports = merge(baseConfig, {
       }
     ]
   },
-  devServer: {
-    // static file location
-    contentBase: paths.appDist,
-    // enable gzip compression
-    compress: true,
-    // hot module replacement. Depends on HotModuleReplacementPlugin
-    hot: true,
-    port: 9001,
-    // open browser automatically
-    open: true,
-    // support html5 history api
-    historyApiFallback: true
-  },
+  // devServer: {
+  //   // static file location
+  //   contentBase: paths.appDist,
+  //   // enable gzip compression
+  //   compress: true,
+  //   // hot module replacement. Depends on HotModuleReplacementPlugin
+  //   hot: true,
+  //   port: 9001,
+  //   // open the browser automatically
+  //   open: true,
+  //   // support html5 history api
+  //   historyApiFallback: true,
+  //   // show errors in the browser
+  //   overlay: true,
+  //   proxy: packageJson.proxy
+  // },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     // If you require a missing module and then `npm install` it, you still have
