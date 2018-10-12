@@ -1,3 +1,12 @@
+<a name="0.6.1"></a>
+
+## [0.6.1](https://github.com/vito24/cka/compare/v0.6.0...v0.6.1) (2018-10-12)
+
+### Features
+
+- **package:** add proxy config ([a0d1938](https://github.com/vito24/cka/commit/a0d1938))
+- **package:** add proxy config ([30c256e](https://github.com/vito24/cka/commit/30c256e))
+
 <a name="0.6.0"></a>
 
 # [0.6.0](https://github.com/vito24/cka/compare/v0.5.0...v0.6.0) (2018-10-12)
