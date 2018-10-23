@@ -1,3 +1,7 @@
+<a name="0.6.3"></a>
+
+## [0.6.3](https://github.com/vito24/cka/compare/v0.6.3-alpha.3...v0.6.3) (2018-10-23)
+
 <a name="0.6.1"></a>
 
 ## [0.6.1](https://github.com/vito24/cka/compare/v0.6.0...v0.6.1) (2018-10-12)
