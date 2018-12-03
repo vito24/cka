@@ -4,8 +4,9 @@
   "description": "",
   "private": true,
   "scripts": {
-    "start": "node ./scripts/start.js",
-    "build": "webpack --config config/webpack.config.prod.js"
+    "start": "cross-env BUNDLE_ENV=dev node ./scripts/start.js",
+    "buildBeta": "cross-env BUNDLE_ENV=beta webpack --config config/webpack.config.prod.js",
+    "build": "cross-env BUNDLE_ENV=production webpack --config config/webpack.config.prod.js"
   },
   "dependencies": {
     "@babel/core": "^7.0.0",
@@ -54,6 +55,7 @@
   "devDependencies": {
     "babel-eslint": "^10.0.0",
     "chalk": "^2.4.1",
+    "cross-env": "^5.2.0",
     "eslint": "^5.6.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^3.1.0",
