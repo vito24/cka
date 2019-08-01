@@ -1,3 +1,11 @@
+<a name="0.6.5"></a>
+
+## [0.6.5](https://github.com/vito24/cka/compare/v0.6.4...v0.6.5) (2019-01-23)
+
+### Features
+
+- **package:** antd locale ([f4ac09c](https://github.com/vito24/cka/commit/f4ac09c))
+
 <a name="0.6.4"></a>
 
 ## [0.6.4](https://github.com/vito24/cka/compare/v0.6.3...v0.6.4) (2018-12-03)
