@@ -1,11 +1,3 @@
-<a name="0.6.4"></a>
-
-## [0.6.4](https://github.com/vito24/cka/compare/v0.6.3...v0.6.4) (2018-12-03)
-
-### Features
-
-- **package:** add environment variable 'BUNDLE_ENV' to differentiate beta or production ([f59ee51](https://github.com/vito24/cka/commit/f59ee51))
-
 <a name="0.6.3"></a>
 
 ## [0.6.3](https://github.com/vito24/cka/compare/v0.6.3-alpha.3...v0.6.3) (2018-10-23)
